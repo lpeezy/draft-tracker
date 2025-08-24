@@ -24,6 +24,8 @@ function App() {
     "Rico Dowdle": "RB", "Michael Penix Jr.": "QB", "Marvin Mims Jr.": "WR", "Jonnu Smith": "TE", "Nick Chubb": "RB", "Bhayshul Tuten": "RB", "Jaylen Wright": "RB", "Dylan Sampson": "RB", "Denver Broncos": "DEF",
     "Romeo Doubs": "WR", "Zach Ertz": "TE", "Matthew Stafford": "QB", "Marquise Brown": "WR", "Keenan Allen": "WR",
     "Kyle Williams": "WR", "Geno Smith": "QB", "Wan'Dale Robinson": "WR", "Tre' Harris": "WR", "Adam Thielen": "WR", "Roschon Johnson": "RB", "Jalen McMillan": "WR", "Joshua Palmer": "WR", "Quentin Johnston": "WR", "DeMario Douglas": "WR", "Brenton Strange": "TE", "Philadelphia Eagles": "DEF", "Pittsburgh Steelers": "DEF", "Baltimore Ravens": "DEF", "Minnesota Vikings": "DEF",
+    "Xavier Worthy": "WR", "George Pickens": "WR", "Calvin Ridley": "WR", "David Montgomery": "RB", "D'Andre Swift": "RB", "Jaylen Waddle": "WR", "Tony Pollard": "RB", "Sam LaPorta": "TE",
+    "Isiah Pacheco": "RB", "Rashee Rice": "WR", "RJ Harvey": "RB", "Aaron Jones Sr.": "RB", "Patrick Mahomes II": "QB",
     "Xavier Legette": "WR", "Blake Corum": "RB", "Houston Texans": "DEF",
     "Cam Ward": "QB", "Sam Darnold": "QB", "Isaiah Likely": "TE", "MarShawn Lloyd": "RB", "DeAndre Hopkins": "WR", "Chig Okonkwo": "TE", "Mike Gesicki": "TE", "Buffalo Bills": "DEF", "Detroit Lions": "DEF", "Kansas City Chiefs": "DEF", "Brandon Aubrey": "K", "Jake Bates": "K", "Cameron Dicker": "K",
     "Pat Freiermuth": "TE", "Alec Pierce": "WR", "Mason Taylor": "TE", "Cade Otton": "TE", "Jalen Coker": "WR", "Justice Hill": "RB", "Aaron Rodgers": "QB"
@@ -38,6 +40,8 @@ function App() {
     "Tier 6": ["Kenneth Walker III", "Omarion Hampton", "Breece Hall", "Marvin Harrison Jr.", "Alvin Kamara", "Terry McLaurin", "DJ Moore"],
     "Tier 7": ["DK Metcalf", "Joe Burrow", "Chuba Hubbard", "James Conner", "Courtland Sutton"],
     "Tier 8": ["DeVonta Smith", "Jameson Williams", "TreVeyon Henderson", "Tetairoa McMillan", "Zay Flowers"],
+    "Tier 9": ["Xavier Worthy", "George Pickens", "Calvin Ridley", "David Montgomery", "D'Andre Swift", "Jaylen Waddle", "Tony Pollard", "Sam LaPorta"],
+    "Tier 10": ["Isiah Pacheco", "Rashee Rice", "RJ Harvey", "Aaron Jones Sr.", "Patrick Mahomes II"],
     "Tier 11": ["Travis Hunter", "T.J. Hockenson", "Chris Olave"],
     "Tier 12": ["Baker Mayfield", "Kaleb Johnson", "Jerry Jeudy", "Rome Odunze", "Brian Robinson Jr.", "Tyrone Tracy Jr.", "Bo Nix", "Mark Andrews", "Travis Kelce"],
     "Tier 13": ["Kyler Murray", "Joe Mixon", "Jakobi Meyers", "Jaylen Warren", "Stefon Diggs", "Ricky Pearsall", "Jordan Addison", "David Njoku", "Dak Prescott", "Travis Etienne Jr.", "Jauan Jennings"],
@@ -56,10 +60,50 @@ function App() {
     "Tier 26": ["Pat Freiermuth", "Alec Pierce", "Mason Taylor", "Cade Otton", "Jalen Coker", "Justice Hill", "Aaron Rodgers"]
   };
 
+  const defaultSelectedPlayers = [
+    "Jahmyr Gibbs",
+    "Amon-Ra St. Brown", 
+    "De'Von Achane",
+    "Ja'Marr Chase",
+    "CeeDee Lamb",
+    "Lamar Jackson",
+    "Malik Nabers",
+    "Nico Collins",
+    "DeVonta Smith",
+    "Jonathan Taylor",
+    "James Cook",
+    "Josh Allen",
+    "DJ Moore",
+    "Rashee Rice",
+    "Puka Nacua",
+    "Xavier Worthy",
+    "Brock Bowers",
+    "Bijan Robinson",
+    "Tee Higgins",
+    "Brian Thomas Jr.",
+    "Calvin Ridley",
+    "Joe Burrow",
+    "Jameson Williams",
+    "Chase Brown",
+    "Jared Goff",
+    "Chuba Hubbard",
+    "Ladd McConkey",
+    "Justin Jefferson",
+    "J.K. Dobbins",
+    "Jayden Daniels",
+    "Bucky Irving",
+    "Bo Nix",
+    "Tucker Kraft",
+    "Jauan Jennings"
+  ];
+
   const [playerStatus, setPlayerStatus] = useState({});
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     const savedData = localStorage.getItem('draftTracker');
+    const savedTheme = localStorage.getItem('darkMode');
+    
     console.log('Loading saved data:', savedData);
     if (savedData) {
       try {
@@ -69,6 +113,18 @@ function App() {
       } catch (error) {
         console.error('Error loading saved data:', error);
       }
+    } else {
+      // Set default player statuses if no saved data exists
+      const defaultStatus = {};
+      defaultSelectedPlayers.forEach(player => {
+        defaultStatus[player] = 'others';
+      });
+      setPlayerStatus(defaultStatus);
+      console.log('Set default player statuses for:', defaultSelectedPlayers.length, 'players');
+    }
+
+    if (savedTheme !== null) {
+      setIsDarkMode(savedTheme === 'true');
     }
   }, []);
 
@@ -92,6 +148,12 @@ function App() {
       localStorage.removeItem('draftTracker');
       console.log('Draft selections cleared');
     }
+  };
+
+  const toggleDarkMode = () => {
+    const newDarkMode = !isDarkMode;
+    setIsDarkMode(newDarkMode);
+    localStorage.setItem('darkMode', newDarkMode.toString());
   };
 
   const getPlayerStatus = (playerName) => {
@@ -136,7 +198,7 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className={`App ${isDarkMode ? 'dark-mode' : ''}`}>
       <div className="sidebar">
         <div className="sidebar-content">
           <h3>My Team ({getMyPlayers().length})</h3>
@@ -160,9 +222,14 @@ function App() {
             <h1>Lauren, Frank, and Ryker's Draft Tracker</h1>
             <p className="header-subtitle">Fantasy Football Draft Board</p>
           </div>
-          <button className="reset-button" onClick={handleReset}>
-            Reset All Selections
-          </button>
+          <div className="header-buttons">
+            <button className="theme-toggle-button" onClick={toggleDarkMode}>
+              {isDarkMode ? '☀️' : '🌙'}
+            </button>
+            <button className="reset-button" onClick={handleReset}>
+              Reset All Selections
+            </button>
+          </div>
         </header>
         <main className="draft-content">
         {Object.entries(initialTiers).map(([tierName, players]) => (
