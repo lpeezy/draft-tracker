@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/draft-tracker/static/css/main.4e6250da.css",
+    "main.js": "/draft-tracker/static/js/main.80f34afb.js",
+    "static/js/453.814f6beb.chunk.js": "/draft-tracker/static/js/453.814f6beb.chunk.js",
+    "index.html": "/draft-tracker/index.html",
+    "main.4e6250da.css.map": "/draft-tracker/static/css/main.4e6250da.css.map",
+    "main.80f34afb.js.map": "/draft-tracker/static/js/main.80f34afb.js.map",
+    "453.814f6beb.chunk.js.map": "/draft-tracker/static/js/453.814f6beb.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4e6250da.css",
+    "static/js/main.80f34afb.js"
+  ]
+}
